@@ -2,14 +2,13 @@ package crack
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/xuender/oil/array"
 )
 
 // Pass 密码生成
-func Pass(pass chan<- string, out chan<- string) {
+func Pass(pass chan string, out chan string) {
 	old := ""
 	num := 0
 	go func() {
@@ -21,16 +20,20 @@ func Pass(pass chan<- string, out chan<- string) {
 	}()
 
 	// http://www.lingocn.com/
-	bs := []byte("htp:/w.lingocn.m")
-	array.Combine(len(bs), func(is []int) error {
-
-		return nil
-	})
-	for i := -1000; i < 1000; i++ {
-		p := strconv.FormatInt(int64(i), 10)
-		pass <- p
-		old = p
-		num++
+	bs := []byte("htp:/w.lingocn.m3")
+	for l := 1; l < 20; l++ {
+		p, _ := array.NewProduct(len(bs), l)
+		for p.Next() {
+			is := p.Value()
+			ps := make([]byte, l)
+			for i, b := range is {
+				ps[i] = bs[b]
+			}
+			old = string(ps)
+			// fmt.Println(old)
+			pass <- old
+			num++
+		}
 	}
 	out <- ""
 }

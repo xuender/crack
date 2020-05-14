@@ -40,7 +40,7 @@ func Crack(ctx context.Context, rar string, in <-chan string, out chan<- string)
 					}
 					_, err = io.Copy(bytes.NewBufferString(""), rdr)
 					if err != nil {
-						fmt.Println(err)
+						// fmt.Println(err)
 						ok = false
 					}
 					break
