@@ -9,11 +9,24 @@ import (
 
 	"github.com/nwaples/rardecode"
 	"github.com/xuender/crack"
+	"github.com/xuender/oil/array"
 )
 
 // TODO https://www.jianshu.com/p/f9cf46a4de0e
 
 func main() {
+
+	bs := []byte("ABC")
+	array.Combine(len(bs), func(is []int) error {
+		pass := make([]byte, len(is))
+		for i, b := range is {
+			pass[i] = bs[b]
+		}
+		fmt.Println(string(pass))
+		return nil
+	})
+}
+func main4() {
 	inChan := make(chan string, 1)
 	outChan := make(chan string, 1)
 	ctx, cancel := context.WithCancel(context.Background())
