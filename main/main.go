@@ -58,7 +58,7 @@ func probing(c *gocrack.Crack) {
 	}
 }
 func head() {
-	fmt.Println("GoCrack! 0.1 by Ender Xu (xuender@gmail.com)")
+	fmt.Println("GoCrack! 1.0.1 by Ender Xu (xuender@gmail.com)")
 	fmt.Println()
 }
 
