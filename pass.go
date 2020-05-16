@@ -1,4 +1,4 @@
-package crack
+package gocrack
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Pass 密码生成
-func Pass(pass chan string, out chan string) {
+func Pass(pass chan string, out chan string, bs []byte, current string) {
 	old := ""
 	num := 0
 	go func() {
@@ -19,8 +19,6 @@ func Pass(pass chan string, out chan string) {
 		}
 	}()
 
-	// http://www.lingocn.com/
-	bs := []byte("htp:/w.lingocn.m3")
 	for l := 1; l < 20; l++ {
 		p, _ := array.NewProduct(len(bs), l)
 		for p.Next() {
@@ -30,6 +28,12 @@ func Pass(pass chan string, out chan string) {
 				ps[i] = bs[b]
 			}
 			old = string(ps)
+			if current != "" {
+				if current == old {
+					current = ""
+				}
+				continue
+			}
 			// fmt.Println(old)
 			pass <- old
 			num++

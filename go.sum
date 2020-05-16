@@ -4,9 +4,10 @@ github.com/nwaples/rardecode v1.1.0/go.mod h1:5DzqNKiOdpKKBH87u8VlvAnPZMXcGRhxWk
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
-github.com/xuender/oil v0.0.0-20200514065500-f87847d29f8b h1:sWZJFJCOcTVLXqeNgNuig98ROnO7E8cEhwkRLnLwBYo=
-github.com/xuender/oil v0.0.0-20200514065500-f87847d29f8b/go.mod h1:F5VB2EA8trmZtighU2/LvbMOVlfOYbjT4m0VTJ+fBQ8=
-github.com/xuender/oil v0.0.0-20200514080336-91f23fc9d18d h1:9IngK+lLZMZ6/1T+gCixO1s6MvuAIxhWB23povo1/gs=
+github.com/xuender/crack v0.0.0-20200514082431-4ff97fade473 h1:ALKlokJOu5vLEin6mE9sIauCliZg35e77ZGgUs0I4Dc=
+github.com/xuender/crack v0.0.0-20200514082431-4ff97fade473/go.mod h1:D6JCad/PplKfZJUjDZRNokPbfjrbd+B53NATaA9Ne+w=
 github.com/xuender/oil v0.0.0-20200514080336-91f23fc9d18d/go.mod h1:F5VB2EA8trmZtighU2/LvbMOVlfOYbjT4m0VTJ+fBQ8=
+github.com/xuender/oil v1.0.20 h1:VAEGUsbrmJNrA//Ms0W91Pwm0WBWIUV8CqAs3OmFwi0=
+github.com/xuender/oil v1.0.20/go.mod h1:F5VB2EA8trmZtighU2/LvbMOVlfOYbjT4m0VTJ+fBQ8=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=

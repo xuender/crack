@@ -1,4 +1,4 @@
-package crack
+package gocrack
 
 import (
 	"bytes"
@@ -10,9 +10,9 @@ import (
 	"github.com/nwaples/rardecode"
 )
 
-// Crack 破解
-func Crack(ctx context.Context, rar string, in <-chan string, out chan<- string) {
-	rarfile, err := os.Open("a.rar")
+// Crack password
+func Crack(ctx context.Context, path string, in <-chan string, out chan<- string) {
+	rarfile, err := os.Open(path)
 	if err != nil {
 		out <- ""
 		return
@@ -21,7 +21,7 @@ func Crack(ctx context.Context, rar string, in <-chan string, out chan<- string)
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("协程终止")
+			fmt.Println("Done")
 			return
 		case pass := <-in:
 			rarfile.Seek(0, 0)
