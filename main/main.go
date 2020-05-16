@@ -2,20 +2,16 @@ package main
 
 import (
 	"context"
-	"encoding/xml"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
+	"time"
 
 	"github.com/xuender/gocrack"
-	"github.com/xuender/oil/str"
 )
-
-// TODO https://www.jianshu.com/p/f9cf46a4de0e
 
 var (
 	_help bool
@@ -30,18 +26,37 @@ func init() {
 }
 func main() {
 	head()
-	// doCrack("a.rar", 4)
 	flag.Parse()
 	if _help || len(flag.Args()) < 1 {
 		usage()
-
 	} else {
-		for _, name := range flag.Args() {
-			doCrack(name)
+		if c, err := gocrack.New(flag.Arg(0), _abc); err == nil {
+			c.Ctx, c.Cancel = context.WithCancel(context.Background())
+			signalChan := make(chan os.Signal, 1)
+			signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+			defer c.Close()
+			go c.Run(_num)
+			go probing(c)
+			select {
+			case <-c.Ctx.Done():
+				if c.GoodPassword != "" {
+					fmt.Printf("GOOD: password cracked: '%s'\n", c.GoodPassword)
+				}
+			case <-signalChan:
+			}
+		} else {
+			fmt.Printf("ERROR: %s\n", err)
 		}
 	}
 }
 
+func probing(c *gocrack.Crack) {
+	for {
+		time.Sleep(time.Second * 1)
+		fmt.Printf("Probing: '%s' [%d pwds/sec]\n", c.Current, c.Num)
+		c.Num = 0
+	}
+}
 func head() {
 	fmt.Println("GoCrack! 0.1 by Ender Xu (xuender@gmail.com)")
 	fmt.Println()
@@ -58,48 +73,4 @@ func usage() {
 	// fmt.Println("  This program supports only RAR, ZIP and 7Z encrypted archives.")
 	fmt.Println("  This program supports only RAR encrypted archives.")
 	fmt.Println("  GoCrack! usually detects the archive type.")
-}
-
-func doCrack(path string) {
-	if err := gocrack.Check(path); err != nil {
-		fmt.Printf("ERROR: %s\n", err)
-		return
-	}
-	current := ""
-	if file, err := os.Open(fmt.Sprintf("%s.xml", path)); err == nil {
-		defer file.Close()
-		if data, err := ioutil.ReadAll(file); err == nil {
-			v := gocrack.Config{}
-			if err = xml.Unmarshal(data, &v); err == nil {
-				_abc = v.ABC
-				if v.GoodPassword == "" {
-					current = v.Current
-				}
-				// TODO GoodPassword
-				// fmt.Println(v)
-			}
-		}
-	}
-	inChan := make(chan string, 1)
-	outChan := make(chan string, 1)
-	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
-	ctx, cancel := context.WithCancel(context.Background())
-
-	for i := 0; i < _num; i++ {
-		go gocrack.Crack(ctx, path, inChan, outChan)
-	}
-	go gocrack.Pass(inChan, outChan, str.Union(_abc), current)
-	select {
-	case <-signalChan:
-		fmt.Println("----保存")
-		cancel()
-	case r := <-outChan:
-		if r == "" {
-			fmt.Println("密码未找到")
-		} else {
-			fmt.Printf("GOOD: password cracked: '%s'\n", r)
-		}
-		cancel()
-	}
 }
