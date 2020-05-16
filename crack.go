@@ -40,6 +40,9 @@ func (c *Crack) Run(num int) {
 			c.GoodPassword = ""
 		}
 	}
+	if num > 50 {
+		num = 50
+	}
 	for i := 0; i < num; i++ {
 		go c.crack()
 	}
@@ -66,6 +69,7 @@ func (c *Crack) Run(num int) {
 			c.Num++
 		}
 	}
+	c.Cancel()
 }
 
 func (c *Crack) crack() {

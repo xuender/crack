@@ -21,7 +21,7 @@ var (
 
 func init() {
 	flag.BoolVar(&_help, "help", false, "show this screen.")
-	flag.IntVar(&_num, "goroutines", runtime.NumCPU(), "you can specify how many goroutines will be run, maximum 20")
+	flag.IntVar(&_num, "goroutines", runtime.NumCPU(), "you can specify how many goroutines will be run, maximum 50")
 	flag.StringVar(&_abc, "abc", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", "the password may contain letters")
 }
 func main() {
@@ -41,6 +41,8 @@ func main() {
 			case <-c.Ctx.Done():
 				if c.GoodPassword != "" {
 					fmt.Printf("GOOD: password cracked: '%s'\n", c.GoodPassword)
+				} else {
+					fmt.Println("ERROR: password is not find.")
 				}
 			case <-signalChan:
 			}
@@ -58,7 +60,7 @@ func probing(c *gocrack.Crack) {
 	}
 }
 func head() {
-	fmt.Println("GoCrack! 1.0.1 by Ender Xu (xuender@gmail.com)")
+	fmt.Println("GoCrack! 1.0.2 by Ender Xu (xuender@gmail.com)")
 	fmt.Println()
 }
 
