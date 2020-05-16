@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime"
 
 	"github.com/xuender/oil/array"
 	"github.com/xuender/oil/str"
@@ -25,7 +26,7 @@ type Crack struct {
 }
 
 // Run 运行
-func (c *Crack) Run(num int) {
+func (c *Crack) Run() {
 	if c.GoodPassword != "" {
 		rarfile, err := os.Open(c.path)
 		if err != nil {
@@ -36,14 +37,10 @@ func (c *Crack) Run(num int) {
 		if rar(rarfile, c.GoodPassword) {
 			c.Cancel()
 			return
-		} else {
-			c.GoodPassword = ""
 		}
+		c.GoodPassword = ""
 	}
-	if num > 50 {
-		num = 50
-	}
-	for i := 0; i < num; i++ {
+	for i := 0; i < runtime.NumCPU(); i++ {
 		go c.crack()
 	}
 

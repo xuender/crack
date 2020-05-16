@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"runtime"
 	"syscall"
 	"time"
 
@@ -15,13 +14,11 @@ import (
 
 var (
 	_help bool
-	_num  int
 	_abc  string
 )
 
 func init() {
 	flag.BoolVar(&_help, "help", false, "show this screen.")
-	flag.IntVar(&_num, "goroutines", runtime.NumCPU(), "you can specify how many goroutines will be run, maximum 50")
 	flag.StringVar(&_abc, "abc", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", "the password may contain letters")
 }
 func main() {
@@ -35,7 +32,7 @@ func main() {
 			signalChan := make(chan os.Signal, 1)
 			signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 			defer c.Close()
-			go c.Run(_num)
+			go c.Run()
 			go probing(c)
 			select {
 			case <-c.Ctx.Done():
